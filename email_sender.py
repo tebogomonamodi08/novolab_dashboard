@@ -10,5 +10,5 @@ with SMTP_SSL('smtp.gmail.com',port, context=context) as server:
     server.sendmail(
         from_addr='tebogomonamodi08gmail.com',
         to_addrs='tebogomonamodi64@gmail.com',
-        msg='subject: test mail\nHello There this is an automated email'
+        msg='subject: test mail\nWell this is '
     )
