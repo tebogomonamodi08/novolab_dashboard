@@ -46,7 +46,6 @@ def send_mail(receiver_addr:str, otp:str):
     return False
 
 
-print(send_mail('tebogomonamodi08@gmail.com',9090980))
 
 
 
