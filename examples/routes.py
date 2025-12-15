@@ -25,7 +25,8 @@ class Sidebar:
 
     def _build(self):
         with ui.column().classes('bg-black items-center text-white h-screen w-1/5 top-0 left-0 m-0 p-0'):
-            ui.label('Management').classes('font-bold')
+            ui.label('Novolab').classes('font-bold text-xl')
+            ui.label('Management').classes('font-bold text-gray-500')
             options = ['Campaigns','Areas', 'Campaign Schedules','Search']
             x='Campaigns'
             
