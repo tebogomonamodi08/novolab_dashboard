@@ -25,8 +25,8 @@ def login_page():
                 email_field = ui.input(label='Enter email', placeholder='tebogo@novo.com').classes('w-full')
 
                 #Send OTP button
-                def handle_send_otp():
-                    success = send_otp(email_field.value)
+                async def handle_send_otp():
+                    success = await asyncio.to_thread(send_otp, email_field.value)
                     if success:
                         ui.notify('OTP sent! Check your email', color='green')
                         otp_field.props(remove='disabled')
@@ -34,7 +34,7 @@ def login_page():
                     else:
                         ui.notify('Failed to send OTP', color='red')
 
-                ui.button('Send OTP', on_click=handle_send_otp).classes('bg-black text-white font-bold').classes('w-full')
+                ui.button('Send OTP', on_click=asyncio.create_task(handle_send_otp()).classes('bg-black text-white font-bold').classes('w-full')
 
                 # OTP input (disabled initially)
                 otp_field = ui.input(label='Enter OTP', placeholder='123456').classes('w-full').props('disabled')
@@ -51,4 +51,6 @@ def login_page():
 
                 login_button.on('click', handle_login)
 
-ui.run(port=8001, host='0.0.0.0')
+ui.run(host='0.0.0.0',
+      port=int(os.environ.get('PORT', 8000)),
+    reload=False)
