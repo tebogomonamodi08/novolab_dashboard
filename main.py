@@ -34,7 +34,7 @@ def login_page():
                     else:
                         ui.notify('Failed to send OTP', color='red')
 
-                ui.button('Send OTP', on_click=asyncio.create_task(handle_send_otp()).classes('bg-black text-white font-bold').classes('w-full')
+                ui.button('Send OTP', on_click=lambda: asyncio.create_task(handle_send_otp()).classes('bg-black text-white font-bold w-full').
 
                 # OTP input (disabled initially)
                 otp_field = ui.input(label='Enter OTP', placeholder='123456').classes('w-full').props('disabled')
@@ -53,4 +53,4 @@ def login_page():
 
 ui.run(host='0.0.0.0',
       port=int(os.environ.get('PORT', 8000)),
-    reload=False)
+      reload=False)
