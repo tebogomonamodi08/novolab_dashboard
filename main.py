@@ -1,3 +1,5 @@
+import asyncio
+import os
 from nicegui import ui
 from authentication_controller import send_otp, user_otp
 import pages.dashboard  
@@ -6,11 +8,7 @@ import pages.dashboard
 def login_page():
     ui.add_head_html('''
         <style>
-        html,body { margin:0; 
-                    padding:0; 
-                    height:100%; 
-                     width:100%; 
-                     background-color:black; }
+        html,body { margin:0; padding:0; height:100%; width:100%; background-color:black; }
         </style>
     ''')
 
@@ -24,7 +22,13 @@ def login_page():
                 # Email input
                 email_field = ui.input(label='Enter email', placeholder='tebogo@novo.com').classes('w-full')
 
-                #Send OTP button
+                # OTP input (disabled initially)
+                otp_field = ui.input(label='Enter OTP', placeholder='123456').classes('w-full').props('disabled')
+
+                # Login button (disabled initially)
+                login_button = ui.button('Login').classes('bg-black text-white font-bold').props('disabled')
+
+                # Send OTP button
                 async def handle_send_otp():
                     success = await asyncio.to_thread(send_otp, email_field.value)
                     if success:
@@ -34,23 +38,24 @@ def login_page():
                     else:
                         ui.notify('Failed to send OTP', color='red')
 
-                ui.button('Send OTP', on_click=lambda: asyncio.create_task(handle_send_otp()).classes('bg-black text-white font-bold w-full').
-
-                # OTP input (disabled initially)
-                otp_field = ui.input(label='Enter OTP', placeholder='123456').classes('w-full').props('disabled')
-
-                # Login button (disabled initially)
-                login_button = ui.button('Login').classes('bg-black text-white font-bold').props('disabled')
+                ui.button(
+                    'Send OTP',
+                    on_click=lambda: asyncio.create_task(handle_send_otp())
+                ).classes('bg-black text-white font-bold w-full')
 
                 # Login logic
                 def handle_login():
                     if user_otp.get(email_field.value) == otp_field.value:
-                        ui.navigate.to('/dashboard')  # Correct way to navigate
+                        ui.navigate.to('/dashboard')
                     else:
                         ui.notify('Wrong OTP', color='red')
 
                 login_button.on('click', handle_login)
 
-ui.run(host='0.0.0.0',
-      port=int(os.environ.get('PORT', 8000)),
-      reload=False)
+# Correct port binding for Render
+ui.run(
+    host='0.0.0.0',
+    port=int(os.environ.get('PORT', 8000)),
+    reload=False
+)
+
