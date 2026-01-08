@@ -51,4 +51,4 @@ def login_page():
 
                 login_button.on('click', handle_login)
 
-ui.run(port=8001)
+ui.run(port=8001, host='0.0.0.0')
